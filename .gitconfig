@@ -1,0 +1,10 @@
+[alias]
+	st = status
+	cm = commit
+	sw = switch
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+[user]
+	name = Bongjun
+	email = bongjun.jang@kaist.ac.kr
+[pull]
+	rebase = true
