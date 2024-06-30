@@ -1,5 +1,15 @@
 require("config.lazy")
-require'lspconfig'.ocamllsp.setup{}
+
+local lspconfig = require('lspconfig')
+lspconfig.ocamllsp.setup{}
+lspconfig.pyright.setup{}
+
+require('tokyonight').setup({
+  transparent = true,
+    styles = {
+      comments = { italic = true },
+    }
+})
 
 vim.opt.number = true
 vim.opt.mouse = 'a'
