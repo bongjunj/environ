@@ -1,5 +1,5 @@
-
 -- Packer Plugin Manager
+
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -33,6 +33,9 @@ require('packer').startup(function(use)
   use { 'hrsh7th/cmp-buffer' }
   use { 'hrsh7th/cmp-path' }
 
+	use { 'saadq/cmp_luasnip' }
+	use { 'L3MON4D3/LuaSnip' }
+
 	use({
     "kylechui/nvim-surround",
     tag = "*",
@@ -47,10 +50,6 @@ require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-
-  -- My plugins here
-  -- use 'foo1/bar1.nvim'
-  -- use 'foo2/bar2.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -114,6 +113,8 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
 })
+
+-- VimTex
 
 vim.g.vimtex_compiler_method = 'latexmk'
 vim.g.vimtex_view_method = 'zathura'
