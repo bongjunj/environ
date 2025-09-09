@@ -25,6 +25,8 @@ require('packer').startup(function(use)
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
 
+	use { 'lervag/vimtex' }
+
 	-- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
@@ -112,5 +114,13 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
 })
+
+vim.g.vimtex_compiler_method = 'latexmk'
+vim.g.vimtex_view_method = 'zathura'
+
+if vim.fn.has('wsl') then
+	-- use the system clipboard for yank/paste
+	vim.opt.clipboard = 'unnamedplus'
+end
 
 
