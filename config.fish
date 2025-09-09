@@ -11,6 +11,7 @@ set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
 set -Ux RBENV_ROOT $HOME/.rbenv
 fish_add_path $RBENV_ROOT/bin
 fish_add_path $HOME/.rbenv/plugins/ruby-build/bin
+fish_add_path /opt/nvim-linux-x86_64/bin
 
 # texlive
 set -Ux TEXLIVE_ROOT /usr/local/texlive/2025
