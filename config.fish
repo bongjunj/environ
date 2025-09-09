@@ -21,3 +21,8 @@ pyenv init - | source
 
 status --is-interactive; and source (rbenv init -|psub)
 
+# Lean Theorem Prover
+if test -d '$HOME/.elan/bin/'
+  fish_add_path $HOME/.elan/bin/
+end
+
