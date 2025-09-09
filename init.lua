@@ -18,10 +18,14 @@ require('packer').startup(function(use)
 
   -- Colorscheme
   use { "catppuccin/nvim", as = "catppuccin" }
+	use {'nyoom-engineering/oxocarbon.nvim'}
+	use ({ 'projekt0n/github-nvim-theme' })
 
   -- IDE
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
+
+	-- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
@@ -29,11 +33,9 @@ require('packer').startup(function(use)
 
 	use({
     "kylechui/nvim-surround",
-    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    tag = "*",
     config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
+        require("nvim-surround").setup({})
     end
 	})
 
@@ -55,7 +57,9 @@ require('packer').startup(function(use)
   end
 end)
 
-vim.cmd("colorscheme catppuccin")
+vim.opt.background = "dark"
+vim.opt.foldopen:remove('block')
+vim.cmd("colorscheme github_dark")
 vim.cmd("set nu")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set tabstop=2")
@@ -64,6 +68,7 @@ vim.cmd("set tabstop=2")
 
 vim.lsp.enable({
   "pyright",
+	"ruff",
   "ocamllsp",
   "rust_analyzer",
 })
@@ -74,19 +79,15 @@ vim.lsp.enable({
 vim.g.mapleader = " "
 
 local nmap = function(keys, func, desc)
-  vim.keymap.set("n", keys, func, { desc = desc, buffer = 0 })
+  vim.keymap.set("n", keys, func, { desc = desc, noremap = true })
 end
 
 nmap("gd", vim.lsp.buf.definition, "Go to Definition")
 nmap("gD", vim.lsp.buf.declaration, "Go to Declaration")
 nmap("gr", vim.lsp.buf.references, "Find References")
-nmap("<leader>rn", vim.lsp.buf.rename, "Rename Symbol")
-nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
 nmap("<leader>F", function()
   vim.lsp.buf.format({ async = true })
 end, "Format Code")
-nmap("<leader>e", vim.diagnostic.open_float, "Show Diagnostics")
-nmap("<leader>o", vim.lsp.buf.document_symbol, "Show Document Symbols")
 
 local builtin = require('telescope.builtin')
 nmap('<leader>ff', builtin.find_files, 'Telescope find files')
