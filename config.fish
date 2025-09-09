@@ -2,18 +2,21 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-set -gx TERM xterm-256color
-set -gx PATH /opt/nvim-linux64/bin/ $PATH
-
-alias vi nvim
-alias python python3
-alias eoe 'eval $(opam env)'
-alias ta 'tmux attach -t main'
-alias exp2 ~/llfuzz-experiment/exp2
-
 # opam configuration
-source /home/bonjune/.opam/opam-init/init.fish >/dev/null 2>/dev/null; or true
+source /home/bonjune/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
 set -Ux PYENV_ROOT $HOME/.pyenv
 set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+
+set -Ux RBENV_ROOT $HOME/.rbenv
+fish_add_path $RBENV_ROOT/bin
+fish_add_path $HOME/.rbenv/plugins/ruby-build/bin
+
+# texlive
+set -Ux TEXLIVE_ROOT /usr/local/texlive/2025
+fish_add_path $TEXLIVE_ROOT/bin/x86_64-linux
+
 pyenv init - | source
+
+status --is-interactive; and source (rbenv init -|psub)
+

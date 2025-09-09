@@ -8,4 +8,6 @@
 	email = bongjun.jang@kaist.ac.kr
 [pull]
 	rebase = true
+[core]
+	editor = vi
 
