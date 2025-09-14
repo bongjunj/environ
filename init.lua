@@ -14,20 +14,20 @@ end
 local packer_bootstrap = ensure_packer()
 
 require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
+  use { 'wbthomason/packer.nvim' }
 
   -- Colorscheme
   use { "catppuccin/nvim", as = "catppuccin" }
-	use {'nyoom-engineering/oxocarbon.nvim'}
-	use ({ 'projekt0n/github-nvim-theme' })
+  use {'nyoom-engineering/oxocarbon.nvim'}
+  use { 'projekt0n/github-nvim-theme' }
 
   -- IDE
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
 
-	use { 'lervag/vimtex' }
+  use { 'lervag/vimtex' }
 
-	-- Autocompletion
+  -- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
