@@ -24,6 +24,12 @@ require('packer').startup(function(use)
   -- IDE
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
+	use({
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		after = "nvim-treesitter",
+		requires = "nvim-treesitter/nvim-treesitter",
+	})
+	use { 'lewis6991/gitsigns.nvim' }
 
   use { 'lervag/vimtex' }
 
@@ -124,4 +130,57 @@ if vim.fn.has('wsl') then
 	vim.opt.clipboard = 'unnamedplus'
 end
 
+local treesitter = require('nvim-treesitter.configs');
+
+treesitter.setup({
+  -- Ensure that the parsers for your languages are installed
+  ensure_installed = { "python", "ocaml", "rust", "c", "cpp", "lua", "bash", "fish", "html", "markdown", "json" },
+	event = { "BufReadPre", "BufNewFile" },
+
+	highlight = {
+		enable = true,
+	},
+	indent = { enable = true },
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "<C-space>",
+			node_incremental = "<C-space>",
+			scope_incremental = false,
+			node_decremental = "<bs>",
+		},
+	},
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+				["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+				["ap"] = "@parameter.outer",
+				["ip"] = "@parameter.inner",
+				["ab"] = "@block.outer",
+				["ib"] = "@block.inner",
+				["al"] = "@loop.outer",
+				["il"] = "@loop.inner",
+        ["ic"] = "@class.inner",
+        ["ac"] = "@class.outer",
+			},
+		},
+		move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]f"] = "@function.outer",
+        ["]c"] = { query = "@class.outer", desc = "Next class start" },
+        ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+      },
+      goto_previous_start = {
+        ["[f"] = "@function.outer",
+        ["[c"] = "@class.outer",
+        ["[z"] = "@fold",
+      },
+    },
+	}
+})
 
