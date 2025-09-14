@@ -29,14 +29,15 @@ require('packer').startup(function(use)
 		after = "nvim-treesitter",
 		requires = "nvim-treesitter/nvim-treesitter",
 	})
-	use { 'lewis6991/gitsigns.nvim' }
+  use { 'lewis6991/gitsigns.nvim' }
 
   use { 'lervag/vimtex' }
 	use {
 		'Julian/lean.nvim',
+		event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
 		requires = {
-			{ 'neovim/nvim-lspconfig' }
-			{ 'nvim-lua/plenary.nvim' }
+			{ 'neovim/nvim-lspconfig' },
+			{ 'nvim-lua/plenary.nvim' },
 		}}
 
   -- Autocompletion
