@@ -45,14 +45,14 @@ end
 
 # Shortcuts
 function da
-	docker attach
+	docker attach $argv
 end
 
 function gs
-	git status
+	git status $argv
 end
 
 function ga
-  git add
+  git add $argv
 end
 
