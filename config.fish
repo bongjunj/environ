@@ -43,3 +43,16 @@ if test -d '$HOME/.elan/bin/'
   fish_add_path $HOME/.elan/bin/
 end
 
+# Shortcuts
+function da
+	docker attach
+end
+
+function gs
+	git status
+end
+
+function ga
+  git add
+end
+

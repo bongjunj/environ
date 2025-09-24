@@ -31,14 +31,22 @@ require('packer').startup(function(use)
 	})
   use { 'lewis6991/gitsigns.nvim' }
 
-  use { 'lervag/vimtex' }
+  use {
+		'lervag/vimtex',
+		event = { 'BufReadPre *.tex', 'BufNewFile *.tex' },
+	}
+
 	use {
 		'Julian/lean.nvim',
 		event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
 		requires = {
 			{ 'neovim/nvim-lspconfig' },
 			{ 'nvim-lua/plenary.nvim' },
-		}}
+	  },
+		config = function()
+			require("lean").setup({ mappings = true })
+		end
+	}
 
   -- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
