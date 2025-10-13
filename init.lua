@@ -85,6 +85,7 @@ vim.cmd("colorscheme github_dark")
 vim.cmd("set nu")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set tabstop=2")
+vim.cmd("set nowrap")
 
 -- LSP
 
