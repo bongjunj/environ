@@ -3,3 +3,6 @@ sudo -E bash nodesource_setup.sh
 sudo apt-get install -y nodejs
 rm nodesource_setup.sh
 node -v
+
+sudo npm install -g pyright
+
