@@ -81,10 +81,11 @@ end)
 
 vim.opt.background = "dark"
 vim.opt.foldopen:remove('block')
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.nu = true
 vim.cmd("colorscheme github_dark")
-vim.cmd("set nu")
-vim.cmd("set shiftwidth=2")
-vim.cmd("set tabstop=2")
 vim.cmd("set nowrap")
 
 -- LSP
