@@ -24,35 +24,40 @@ require('packer').startup(function(use)
   -- IDE
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
-	use({
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		after = "nvim-treesitter",
-		requires = "nvim-treesitter/nvim-treesitter",
-	})
+  use({
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  })
   use { 'lewis6991/gitsigns.nvim' }
-  use {
-      'nvim-tree/nvim-tree.lua',
+  use { 'nvim-tree/nvim-tree.lua',
       requires = {
         'nvim-tree/nvim-web-devicons', -- optional
       },
   }
+  use { "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+        require("nvim-autopairs").setup {}
+    end
+  }
 
   use {
-		'lervag/vimtex',
-		event = { 'BufReadPre *.tex', 'BufNewFile *.tex' },
-	}
+    'lervag/vimtex',
+    event = { 'BufReadPre *.tex', 'BufNewFile *.tex' },
+  }
 
-	use {
-		'Julian/lean.nvim',
-		event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
-		requires = {
-			{ 'neovim/nvim-lspconfig' },
-			{ 'nvim-lua/plenary.nvim' },
-	  },
-		config = function()
-			require("lean").setup({ mappings = true })
-		end
-	}
+  use {
+    'Julian/lean.nvim',
+    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+    requires = {
+      { 'neovim/nvim-lspconfig' },
+      { 'nvim-lua/plenary.nvim' },
+    },
+    config = function()
+      require("lean").setup({ mappings = true })
+    end
+  }
 
   -- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
@@ -60,23 +65,22 @@ require('packer').startup(function(use)
   use { 'hrsh7th/cmp-buffer' }
   use { 'hrsh7th/cmp-path' }
 
-	use { 'saadq/cmp_luasnip' }
-	use { 'L3MON4D3/LuaSnip' }
+  use { 'saadq/cmp_luasnip' }
+  use { 'L3MON4D3/LuaSnip' }
 
-	use({
+  use({
     "kylechui/nvim-surround",
     tag = "*",
     config = function()
         require("nvim-surround").setup({})
     end
-	})
+  })
 
   use {
-		'nvim-telescope/telescope.nvim',
-		tag = '0.1.8',
-		requires = { {'nvim-lua/plenary.nvim'} }
-	}
-
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.8',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -117,7 +121,7 @@ vim.cmd("set nowrap")
 
 vim.lsp.enable({
   "pyright",
-	"ruff",
+  "ruff",
   "ocamllsp",
   "rust_analyzer",
 })
@@ -149,11 +153,11 @@ nmap('<leader>fh', builtin.help_tags, 'Telescope help tags')
 local cmp = require('cmp')
 
 cmp.setup({
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "buffer" },
-		{ name = "path" },
-	}),
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "buffer" },
+    { name = "path" },
+  }),
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -169,8 +173,8 @@ vim.g.vimtex_compiler_method = 'latexmk'
 vim.g.vimtex_view_method = 'zathura'
 
 if vim.fn.has('wsl') then
-	-- use the system clipboard for yank/paste
-	vim.opt.clipboard = 'unnamedplus'
+  -- use the system clipboard for yank/paste
+  vim.opt.clipboard = 'unnamedplus'
 end
 
 local treesitter = require('nvim-treesitter.configs');
@@ -178,39 +182,39 @@ local treesitter = require('nvim-treesitter.configs');
 treesitter.setup({
   -- Ensure that the parsers for your languages are installed
   ensure_installed = { "python", "ocaml", "rust", "c", "cpp", "lua", "bash", "fish", "html", "markdown", "json" },
-	event = { "BufReadPre", "BufNewFile" },
+  event = { "BufReadPre", "BufNewFile" },
 
-	highlight = {
-		enable = true,
-	},
-	indent = { enable = true },
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "<C-space>",
-			node_incremental = "<C-space>",
-			scope_incremental = false,
-			node_decremental = "<bs>",
-		},
-	},
+  highlight = {
+    enable = true,
+  },
+  indent = { enable = true },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<C-space>",
+      node_incremental = "<C-space>",
+      scope_incremental = false,
+      node_decremental = "<bs>",
+    },
+  },
   textobjects = {
     select = {
       enable = true,
       lookahead = true,
       keymaps = {
-				["af"] = "@function.outer",
+        ["af"] = "@function.outer",
         ["if"] = "@function.inner",
-				["ap"] = "@parameter.outer",
-				["ip"] = "@parameter.inner",
-				["ab"] = "@block.outer",
-				["ib"] = "@block.inner",
-				["al"] = "@loop.outer",
-				["il"] = "@loop.inner",
+        ["ap"] = "@parameter.outer",
+        ["ip"] = "@parameter.inner",
+        ["ab"] = "@block.outer",
+        ["ib"] = "@block.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
         ["ic"] = "@class.inner",
         ["ac"] = "@class.outer",
-			},
-		},
-		move = {
+      },
+    },
+    move = {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
       goto_next_start = {
@@ -224,6 +228,6 @@ treesitter.setup({
         ["[z"] = "@fold",
       },
     },
-	}
+  }
 })
 
