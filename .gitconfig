@@ -9,5 +9,5 @@
 [pull]
 	rebase = true
 [core]
-	editor = vi
+	editor = nvim
 
