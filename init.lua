@@ -30,6 +30,12 @@ require('packer').startup(function(use)
 		requires = "nvim-treesitter/nvim-treesitter",
 	})
   use { 'lewis6991/gitsigns.nvim' }
+  use {
+      'nvim-tree/nvim-tree.lua',
+      requires = {
+        'nvim-tree/nvim-web-devicons', -- optional
+      },
+  }
 
   use {
 		'lervag/vimtex',
@@ -79,13 +85,32 @@ require('packer').startup(function(use)
   end
 end)
 
+-- NVIM TREE --
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true -- optionally enable 24-bit colour
+require("nvim-tree").setup({
+  view = { width = 30 },
+  renderer = {
+    special_files = { "Makefile", "README.md", "requirements.txt", "*.opam", "*.install", "Dockerfile" },
+  },
+  actions = {
+    open_file = {
+      resize_window = true,
+      window_picker = { enable = false },
+    },
+  },
+})
+-- NVIM TREE --
+
 vim.opt.background = "dark"
-vim.opt.foldopen:remove('block')
 vim.opt.expandtab = true
-vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.nu = true
-vim.cmd("colorscheme github_dark")
+vim.opt.shiftwidth = 2
+vim.opt.autoindent = true
+vim.opt.foldopen:remove('block')
+vim.cmd("colorscheme catppuccin-frappe")
+vim.cmd("set nu")
 vim.cmd("set nowrap")
 
 -- LSP
@@ -106,6 +131,7 @@ local nmap = function(keys, func, desc)
   vim.keymap.set("n", keys, func, { desc = desc, noremap = true })
 end
 
+-- nmap("gto", , "open neovim tree")
 nmap("gd", vim.lsp.buf.definition, "Go to Definition")
 nmap("gD", vim.lsp.buf.declaration, "Go to Declaration")
 nmap("gr", vim.lsp.buf.references, "Find References")
