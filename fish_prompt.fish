@@ -1,4 +1,3 @@
-# ~/.config/fish/functions/fish_prompt.fish
 function fish_prompt
     # Save the exit status of the last command
     set -l last_status $status
