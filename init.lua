@@ -16,11 +16,6 @@ local packer_bootstrap = ensure_packer()
 require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim' }
 
-  -- Colorscheme
-  use { "catppuccin/nvim", as = "catppuccin" }
-  use {'nyoom-engineering/oxocarbon.nvim'}
-  use { 'projekt0n/github-nvim-theme' }
-
   -- IDE
   use { "neovim/nvim-lspconfig" }
   use { "nvim-treesitter/nvim-treesitter" }
@@ -42,31 +37,10 @@ require('packer').startup(function(use)
     end
   }
 
-  use {
-    'lervag/vimtex',
-    event = { 'BufReadPre *.tex', 'BufNewFile *.tex' },
-  }
-
-  use {
-    'Julian/lean.nvim',
-    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
-    requires = {
-      { 'neovim/nvim-lspconfig' },
-      { 'nvim-lua/plenary.nvim' },
-    },
-    config = function()
-      require("lean").setup({ mappings = true })
-    end
-  }
-
   -- Autocompletion
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
-  use { 'hrsh7th/cmp-path' }
-
-  use { 'saadq/cmp_luasnip' }
-  use { 'L3MON4D3/LuaSnip' }
 
   use({
     "kylechui/nvim-surround",
@@ -75,12 +49,6 @@ require('packer').startup(function(use)
         require("nvim-surround").setup({})
     end
   })
-
-  use {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.8',
-    requires = { {'nvim-lua/plenary.nvim'} }
-  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -107,13 +75,14 @@ require("nvim-tree").setup({
 })
 -- NVIM TREE --
 
+require("gitsigns").setup()
+
 vim.opt.background = "dark"
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.autoindent = true
 vim.opt.foldopen:remove('block')
-vim.cmd("colorscheme catppuccin-frappe")
 vim.cmd("set nu")
 vim.cmd("set nowrap")
 
@@ -124,6 +93,7 @@ vim.lsp.enable({
   "ruff",
   "ocamllsp",
   "rust_analyzer",
+  "bashls",
 })
 
 -- Keymaps
@@ -143,20 +113,12 @@ nmap("<leader>F", function()
   vim.lsp.buf.format({ async = true })
 end, "Format Code")
 
-local builtin = require('telescope.builtin')
-nmap('<leader>ff', builtin.find_files, 'Telescope find files')
-nmap('<leader>fs', builtin.lsp_document_symbols, 'Telescope find symbols')
-nmap('<leader>fg', builtin.live_grep, 'Telescope live grep')
-nmap('<leader>fb', builtin.buffers, 'Telescope buffers')
-nmap('<leader>fh', builtin.help_tags, 'Telescope help tags')
-
 local cmp = require('cmp')
 
 cmp.setup({
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "buffer" },
-    { name = "path" },
   }),
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -167,67 +129,99 @@ cmp.setup({
   }),
 })
 
--- VimTex
-
-vim.g.vimtex_compiler_method = 'latexmk'
-vim.g.vimtex_view_method = 'zathura'
-
 if vim.fn.has('wsl') then
   -- use the system clipboard for yank/paste
   vim.opt.clipboard = 'unnamedplus'
 end
 
-local treesitter = require('nvim-treesitter.configs');
+local treesitter_languages = { "python", "ocaml", "rust", "bash" }
 
-treesitter.setup({
-  -- Ensure that the parsers for your languages are installed
-  ensure_installed = { "python", "ocaml", "rust", "c", "cpp", "lua", "bash", "fish", "html", "markdown", "json" },
-  event = { "BufReadPre", "BufNewFile" },
+require("nvim-treesitter").setup()
+vim.treesitter.language.register("bash", { "sh", "bash" })
 
-  highlight = {
-    enable = true,
-  },
-  indent = { enable = true },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<C-space>",
-      node_incremental = "<C-space>",
-      scope_incremental = false,
-      node_decremental = "<bs>",
-    },
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ap"] = "@parameter.outer",
-        ["ip"] = "@parameter.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-        ["al"] = "@loop.outer",
-        ["il"] = "@loop.inner",
-        ["ic"] = "@class.inner",
-        ["ac"] = "@class.outer",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]f"] = "@function.outer",
-        ["]c"] = { query = "@class.outer", desc = "Next class start" },
-        ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-      },
-      goto_previous_start = {
-        ["[f"] = "@function.outer",
-        ["[c"] = "@class.outer",
-        ["[z"] = "@fold",
-      },
-    },
-  }
+vim.api.nvim_create_user_command("TSInstallCore", function()
+  require("nvim-treesitter").install(treesitter_languages)
+end, { desc = "Install configured Tree-sitter parsers" })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "ocaml", "rust", "sh", "bash" },
+  callback = function()
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+    if not vim.list_contains(treesitter_languages, lang) then
+      return
+    end
+
+    local ok = pcall(vim.treesitter.start)
+    if ok then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
 })
 
+pcall(vim.cmd, "packadd nvim-treesitter-textobjects")
+
+local has_textobjects, textobjects = pcall(require, "nvim-treesitter-textobjects")
+if has_textobjects then
+  textobjects.setup({
+    select = {
+      lookahead = true,
+    },
+    move = {
+      set_jumps = true,
+    },
+  })
+
+  local ts_select = require("nvim-treesitter-textobjects.select")
+
+  vim.keymap.set({ "x", "o" }, "af", function()
+    ts_select.select_textobject("@function.outer", "textobjects")
+  end, { desc = "Select outer function" })
+  vim.keymap.set({ "x", "o" }, "if", function()
+    ts_select.select_textobject("@function.inner", "textobjects")
+  end, { desc = "Select inner function" })
+  vim.keymap.set({ "x", "o" }, "ap", function()
+    ts_select.select_textobject("@parameter.outer", "textobjects")
+  end, { desc = "Select outer parameter" })
+  vim.keymap.set({ "x", "o" }, "ip", function()
+    ts_select.select_textobject("@parameter.inner", "textobjects")
+  end, { desc = "Select inner parameter" })
+  vim.keymap.set({ "x", "o" }, "ab", function()
+    ts_select.select_textobject("@block.outer", "textobjects")
+  end, { desc = "Select outer block" })
+  vim.keymap.set({ "x", "o" }, "ib", function()
+    ts_select.select_textobject("@block.inner", "textobjects")
+  end, { desc = "Select inner block" })
+  vim.keymap.set({ "x", "o" }, "al", function()
+    ts_select.select_textobject("@loop.outer", "textobjects")
+  end, { desc = "Select outer loop" })
+  vim.keymap.set({ "x", "o" }, "il", function()
+    ts_select.select_textobject("@loop.inner", "textobjects")
+  end, { desc = "Select inner loop" })
+  vim.keymap.set({ "x", "o" }, "ac", function()
+    ts_select.select_textobject("@class.outer", "textobjects")
+  end, { desc = "Select outer class" })
+  vim.keymap.set({ "x", "o" }, "ic", function()
+    ts_select.select_textobject("@class.inner", "textobjects")
+  end, { desc = "Select inner class" })
+
+  local ts_move = require("nvim-treesitter-textobjects.move")
+
+  vim.keymap.set({ "n", "x", "o" }, "]f", function()
+    ts_move.goto_next_start("@function.outer", "textobjects")
+  end, { desc = "Next function start" })
+  vim.keymap.set({ "n", "x", "o" }, "]c", function()
+    ts_move.goto_next_start("@class.outer", "textobjects")
+  end, { desc = "Next class start" })
+  vim.keymap.set({ "n", "x", "o" }, "]z", function()
+    ts_move.goto_next_start("@fold", "folds")
+  end, { desc = "Next fold" })
+  vim.keymap.set({ "n", "x", "o" }, "[f", function()
+    ts_move.goto_previous_start("@function.outer", "textobjects")
+  end, { desc = "Previous function start" })
+  vim.keymap.set({ "n", "x", "o" }, "[c", function()
+    ts_move.goto_previous_start("@class.outer", "textobjects")
+  end, { desc = "Previous class start" })
+  vim.keymap.set({ "n", "x", "o" }, "[z", function()
+    ts_move.goto_previous_start("@fold", "folds")
+  end, { desc = "Previous fold" })
+end
