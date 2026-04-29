@@ -25,6 +25,7 @@ require('packer').startup(function(use)
     requires = "nvim-treesitter/nvim-treesitter",
   })
   use { 'lewis6991/gitsigns.nvim' }
+  use { "projekt0n/github-nvim-theme" }
   use { 'nvim-tree/nvim-tree.lua',
       requires = {
         'nvim-tree/nvim-web-devicons', -- optional
@@ -61,6 +62,16 @@ end)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true -- optionally enable 24-bit colour
+local has_github_theme, github_theme = pcall(require, "github-theme")
+if has_github_theme then
+  github_theme.setup({
+    options = {
+      transparent = false,
+      terminal_colors = true,
+    },
+  })
+  vim.cmd.colorscheme("github_dark")
+end
 require("nvim-tree").setup({
   view = { width = 30 },
   renderer = {
@@ -135,26 +146,39 @@ if vim.fn.has('wsl') then
 end
 
 local treesitter_languages = { "python", "ocaml", "rust", "bash" }
+local treesitter_filetypes = { "python", "ocaml", "rust", "sh", "bash" }
 
-require("nvim-treesitter").setup()
 vim.treesitter.language.register("bash", { "sh", "bash" })
 
+local has_treesitter_configs, treesitter_configs = pcall(require, "nvim-treesitter.configs")
+if has_treesitter_configs then
+  treesitter_configs.setup({
+    ensure_installed = treesitter_languages,
+    auto_install = true,
+    highlight = {
+      enable = true,
+    },
+    indent = {
+      enable = true,
+    },
+  })
+else
+  pcall(require("nvim-treesitter").setup)
+end
+
 vim.api.nvim_create_user_command("TSInstallCore", function()
-  require("nvim-treesitter").install(treesitter_languages)
+  vim.cmd("TSInstall " .. table.concat(treesitter_languages, " "))
 end, { desc = "Install configured Tree-sitter parsers" })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "python", "ocaml", "rust", "sh", "bash" },
-  callback = function()
-    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+  pattern = treesitter_filetypes,
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
     if not vim.list_contains(treesitter_languages, lang) then
       return
     end
 
-    local ok = pcall(vim.treesitter.start)
-    if ok then
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    end
+    pcall(vim.treesitter.start, args.buf, lang)
   end,
 })
 
