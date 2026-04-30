@@ -116,6 +116,12 @@ local nmap = function(keys, func, desc)
   vim.keymap.set("n", keys, func, { desc = desc, noremap = true })
 end
 
+-- system clipboard
+
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from system clipboard" })
+
 -- nmap("gto", , "open neovim tree")
 nmap("gd", vim.lsp.buf.definition, "Go to Definition")
 nmap("gD", vim.lsp.buf.declaration, "Go to Declaration")
@@ -139,11 +145,6 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
 })
-
-if vim.fn.has('wsl') then
-  -- use the system clipboard for yank/paste
-  vim.opt.clipboard = 'unnamedplus'
-end
 
 local treesitter_languages = { "python", "ocaml", "rust", "bash" }
 local treesitter_filetypes = { "python", "ocaml", "rust", "sh", "bash" }
