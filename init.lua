@@ -24,6 +24,10 @@ require('packer').startup(function(use)
     after = "nvim-treesitter",
     requires = "nvim-treesitter/nvim-treesitter",
   })
+  use {
+    "nvim-telescope/telescope.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
+  }
   use { 'lewis6991/gitsigns.nvim' }
   use { "projekt0n/github-nvim-theme" }
   use { 'nvim-tree/nvim-tree.lua',
@@ -122,7 +126,13 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clip
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from system clipboard" })
 
--- nmap("gto", , "open neovim tree")
+-- utilities
+nmap("<leader>ff", require("telescope.builtin").find_files, "Find Files")
+
+-- lsp shortcuts
+nmap("K", vim.lsp.buf.hover, "Hover Documentation")
+nmap("<leader>e", vim.diagnostic.open_float, "Show Line Diagnostics")
+
 nmap("gd", vim.lsp.buf.definition, "Go to Definition")
 nmap("gD", vim.lsp.buf.declaration, "Go to Declaration")
 nmap("gr", vim.lsp.buf.references, "Find References")
