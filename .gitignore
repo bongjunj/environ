@@ -1,3 +1,5 @@
 *.tar.*
 fish-*
-nvim
+.codex
+nvim.log
+
