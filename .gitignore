@@ -3,3 +3,4 @@ fish-*
 .codex
 nvim.log
 
+.nvimlog

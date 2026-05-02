@@ -5,6 +5,9 @@ local nmap = function(keys, func, desc)
   vim.keymap.set("n", keys, func, { desc = desc, noremap = true })
 end
 
+vim.keymap.set({ "n", "x" }, "j", "gj", { desc = "Down screen line", noremap = true })
+vim.keymap.set({ "n", "x" }, "k", "gk", { desc = "Up screen line", noremap = true })
+
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from system clipboard" })

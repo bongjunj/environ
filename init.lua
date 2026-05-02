@@ -99,7 +99,10 @@ vim.opt.shiftwidth = 2
 vim.opt.autoindent = true
 vim.opt.foldopen:remove('block')
 vim.cmd("set nu")
-vim.cmd("set nowrap")
+vim.opt.wrap = true
+vim.opt.showbreak = "> "
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 
 -- LSP
 
@@ -119,6 +122,9 @@ vim.g.mapleader = " "
 local nmap = function(keys, func, desc)
   vim.keymap.set("n", keys, func, { desc = desc, noremap = true })
 end
+
+vim.keymap.set({ "n", "x" }, "j", "gj", { desc = "Down screen line", noremap = true })
+vim.keymap.set({ "n", "x" }, "k", "gk", { desc = "Up screen line", noremap = true })
 
 -- system clipboard
 
