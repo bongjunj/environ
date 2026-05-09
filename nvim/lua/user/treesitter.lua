@@ -1,5 +1,5 @@
-local treesitter_languages = { "python", "ocaml", "rust", "bash" }
-local treesitter_filetypes = { "python", "ocaml", "rust", "sh", "bash" }
+local treesitter_languages = { "python", "ocaml", "rust", "bash", "c" }
+local treesitter_filetypes = { "python", "ocaml", "rust", "sh", "bash", "c" }
 
 vim.treesitter.language.register("bash", { "sh", "bash" })
 

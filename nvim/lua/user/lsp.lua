@@ -4,4 +4,5 @@ vim.lsp.enable({
   "ocamllsp",
   "rust_analyzer",
   "bashls",
+  "clangd",
 })
