@@ -40,6 +40,13 @@ vim.keymap.set({ "x", "o" }, "il", function()
   ts_select.select_textobject("@loop.inner", "textobjects")
 end, { desc = "Select inner loop" })
 
+vim.keymap.set({ "x", "o" }, "aC", function()
+  ts_select.select_textobject("@conditional.outer", "textobjects")
+end, { desc = "Select outer conditional" })
+vim.keymap.set({ "x", "o" }, "iC", function()
+  ts_select.select_textobject("@conditional.inner", "textobjects")
+end, { desc = "Select inner conditional" })
+
 vim.keymap.set({ "x", "o" }, "ac", function()
   ts_select.select_textobject("@class.outer", "textobjects")
 end, { desc = "Select outer class" })
