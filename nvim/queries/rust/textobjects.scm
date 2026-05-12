@@ -1,5 +1,16 @@
 ; extends
 
+((attribute_item)* @rust_class.outer
+  .
+  [
+    (struct_item)
+    (enum_item)
+  ] @rust_class.outer)
+
+(let_declaration
+  pattern: (_) @assignment.lhs
+  value: (_) @assignment.rhs) @assignment.outer
+
 (match_expression) @match.outer
 
 (match_expression

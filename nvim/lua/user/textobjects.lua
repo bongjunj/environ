@@ -13,6 +13,7 @@ textobjects.setup({
 })
 
 local ts_select = require("nvim-treesitter-textobjects.select")
+local ts_shared = require("nvim-treesitter-textobjects.shared")
 
 vim.keymap.set({ "x", "o" }, "af", function()
   ts_select.select_textobject("@function.outer", "textobjects")
@@ -48,11 +49,25 @@ vim.keymap.set({ "x", "o" }, "iC", function()
 end, { desc = "Select inner conditional" })
 
 vim.keymap.set({ "x", "o" }, "ac", function()
-  ts_select.select_textobject("@class.outer", "textobjects")
+  if
+    vim.bo.filetype == "rust"
+    and ts_shared.textobject_at_point("@rust_class.outer", "textobjects", 0, nil, {})
+  then
+    ts_select.select_textobject("@rust_class.outer", "textobjects")
+  else
+    ts_select.select_textobject("@class.outer", "textobjects")
+  end
 end, { desc = "Select outer class" })
 vim.keymap.set({ "x", "o" }, "ic", function()
   ts_select.select_textobject("@class.inner", "textobjects")
 end, { desc = "Select inner class" })
+
+vim.keymap.set({ "x", "o" }, "a=", function()
+  ts_select.select_textobject("@assignment.outer", "textobjects")
+end, { desc = "Select outer assignment" })
+vim.keymap.set({ "x", "o" }, "i=", function()
+  ts_select.select_textobject("@assignment.rhs", "textobjects")
+end, { desc = "Select assignment RHS" })
 
 -- Rust Match Expressions
 vim.keymap.set({ "x", "o" }, "am", function()
