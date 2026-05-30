@@ -85,11 +85,21 @@ end, { desc = "Select inner match arm" })
 
 local ts_move = require("nvim-treesitter-textobjects.move")
 
+local function diff_or_textobject_move(diff_motion, textobject_move)
+  if vim.wo.diff then
+    vim.cmd("normal! " .. vim.v.count1 .. diff_motion)
+  else
+    textobject_move()
+  end
+end
+
 vim.keymap.set({ "n", "x", "o" }, "]f", function()
   ts_move.goto_next_start("@function.outer", "textobjects")
 end, { desc = "Next function start" })
 vim.keymap.set({ "n", "x", "o" }, "]c", function()
-  ts_move.goto_next_start("@class.outer", "textobjects")
+  diff_or_textobject_move("]c", function()
+    ts_move.goto_next_start("@class.outer", "textobjects")
+  end)
 end, { desc = "Next class start" })
 vim.keymap.set({ "n", "x", "o" }, "]z", function()
   ts_move.goto_next_start("@fold", "folds")
@@ -98,7 +108,9 @@ vim.keymap.set({ "n", "x", "o" }, "[f", function()
   ts_move.goto_previous_start("@function.outer", "textobjects")
 end, { desc = "Previous function start" })
 vim.keymap.set({ "n", "x", "o" }, "[c", function()
-  ts_move.goto_previous_start("@class.outer", "textobjects")
+  diff_or_textobject_move("[c", function()
+    ts_move.goto_previous_start("@class.outer", "textobjects")
+  end)
 end, { desc = "Previous class start" })
 vim.keymap.set({ "n", "x", "o" }, "[z", function()
   ts_move.goto_previous_start("@fold", "folds")
