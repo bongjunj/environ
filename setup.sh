@@ -6,6 +6,7 @@ fi
 
 ln -sf "$(pwd)/config.fish" ~/.config/fish/config.fish
 ln -sf "$(pwd)/helix/config.toml" ~/.config/helix/config.toml
+ln -sf "$(pwd)/zellij/config.toml" ~/.config/zellij/config.toml
 ln -sf "$(pwd)/.tmux.conf" ~/.tmux.conf
 ln -sf "$(pwd)/.gitconfig" ~/.gitconfig
 ln -sfn "$(pwd)/nvim" ~/.config/nvim
