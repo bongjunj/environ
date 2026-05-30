@@ -1,4 +1,5 @@
-theme = "github_dark"
+theme = "ayu_dark"
 
 [editor]
 true-color = true
+bufferline = "always"
