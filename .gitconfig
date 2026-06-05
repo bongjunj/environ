@@ -10,4 +10,5 @@
 	rebase = true
 [core]
 	editor = nvim
-
+[diff]
+    external = difft
