@@ -5,6 +5,8 @@ injection-regex = "tex"
 file-types = ["tex"]
 roots = [".git", ".latexmkrc"]
 language-servers = [ "texlab" ]
+auto-format = true
+formatter = { command = "latexindent", args = ["-m", "-"] }
 
 [language-server.texlab.config.texlab]
 # 1. Compile automatically on save
