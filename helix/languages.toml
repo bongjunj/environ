@@ -6,7 +6,7 @@ file-types = ["tex"]
 roots = [".git", ".latexmkrc"]
 language-servers = [ "texlab" ]
 auto-format = true
-formatter = { command = "latexindent", args = ["-m", "-"] }
+formatter = { command = "latexindent", args = ["-l", "-m",  "-"] }
 
 [language-server.texlab.config.texlab]
 # 1. Compile automatically on save
@@ -17,4 +17,4 @@ build.args = ["-pdf", "-interaction=nonstopmode", "-synctex=1", "%f"]
 # 2. Tell TexLab to open and focus Skim at the exact line
 build.forwardSearchAfter = true
 forwardSearch.executable = "/Applications/Skim.app/Contents/SharedSupport/displayline"
-forwardSearch.args = ["-g", "%l", "%p", "%f"]
+forwardSearch.args = ["%l", "%p", "%f"]
