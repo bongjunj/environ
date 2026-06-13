@@ -3,3 +3,4 @@ theme = "seoul256-dark-hard"
 [editor]
 true-color = true
 bufferline = "always"
+rulers = [120]
