@@ -158,10 +158,10 @@ keybinds clear-defaults=true {
     shared_among "normal" "locked" {
         bind "F3" {
             Run "lazygit" {
-                floating true
+                in_place true
                 close_on_exit true
-                width "70%"
-                height "70%"
+                // width "70%"
+                // height "70%"
             }
         }
         bind "Alt f" { ToggleFloatingPanes; }
