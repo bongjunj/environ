@@ -4,3 +4,6 @@ theme = "seoul256-dark-hard"
 true-color = true
 bufferline = "always"
 rulers = [120]
+
+[keys.normal]
+C-k = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw"]
