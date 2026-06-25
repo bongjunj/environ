@@ -12,3 +12,4 @@ other-lines = "warning"
 
 [keys.normal]
 C-k = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw"]
+C-r = [":reload-all"]
