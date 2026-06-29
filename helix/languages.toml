@@ -18,3 +18,6 @@ build.args = ["-pdf", "-interaction=nonstopmode", "-synctex=1", "%f"]
 build.forwardSearchAfter = true
 forwardSearch.executable = "/Applications/Skim.app/Contents/SharedSupport/displayline"
 forwardSearch.args = ["-g", "%l", "%p", "%f"]
+
+diagnostics.ignoredPatterns = ["Unused entry"]
+
