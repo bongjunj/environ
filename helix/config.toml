@@ -6,6 +6,7 @@ bufferline = "always"
 rulers = [120]
 end-of-line-diagnostics = "hint"
 line-number = "relative"
+mouse = false
 shell = ["fish", "-c"]
 
 [editor.whitespace.render]
