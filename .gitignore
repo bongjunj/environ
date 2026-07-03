@@ -4,3 +4,4 @@ fish-*
 nvim.log
 
 .nvimlog
+__pycache__

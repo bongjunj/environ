@@ -10,20 +10,13 @@ import subprocess
 import os
 from pathlib import Path
 
+from util import has_sudo, fish_add_paths
+
 
 VERSION="1.26.3"
 ARCHIVE_NAME=f"go{VERSION}.linux-amd64.tar.gz"
 CHECKSUM="2b2cfc7148493da5e73981bffbf3353af381d5f93e789c82c79aff64962eb556"
 URL=f"https://go.dev/dl/{ARCHIVE_NAME}"
-
-def has_sudo():
-    if os.geteuid() == 0:
-        return True
-    try:
-        subprocess.run(["sudo", "-n", "true"], check=True, capture_output=True)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return False
 
 def checksum(filepath, expected):
     sha256 = hashlib.sha256()
@@ -74,8 +67,7 @@ def main():
 
     subprocess.run([go_exe, "version"], env=curr_env)
 
-    if shutil.which("fish"):
-        subprocess.run(["fish", "-lc", f"fish_add_path '{go_bin_dir}' '{go_tools_dir}'"])
+    fish_add_paths(go_bin_dir, go_tools_dir)
 
     subprocess.run([go_exe, "install", "github.com/jesseduffield/lazygit@latest"], env=curr_env)
 
