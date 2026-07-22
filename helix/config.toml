@@ -54,7 +54,6 @@ right = [
   "total-line-numbers",
   "position-percentage",
   "file-encoding",
-  "file-line-ending",
   "file-type",
   "register",
   "selections",

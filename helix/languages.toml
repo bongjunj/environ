@@ -32,3 +32,16 @@ name = "python"
 "'" = "'"
 '`' = '`'
 
+[language-server.dafny-language-server]
+command = "dafny"
+args = [ "server" ]
+
+[[language]]
+name = "dafny"
+scope = "source.dfy"
+file-types = [ "dfy" ]
+language-servers = [ "dafny-language-server" ]
+
+[[grammar]]
+name = "dafny"
+source = { git = "https://github.com/hath995/tree-sitter-dafny", rev = "main" }
