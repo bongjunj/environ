@@ -21,3 +21,14 @@ forwardSearch.args = ["-g", "%l", "%p", "%f"]
 
 diagnostics.ignoredPatterns = ["Unused entry"]
 
+
+[[language]]
+name = "python"
+
+[language.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+"'" = "'"
+'`' = '`'
+
