@@ -1,10 +1,9 @@
-theme = "seoul256-dark-hard"
+theme = "catppuccin_mocha"
 
 [editor]
 true-color = true
 bufferline = "always"
-rulers = [120]
-end-of-line-diagnostics = "hint"
+rulers = [100, 120]
 line-number = "relative"
 mouse = false
 shell = ["fish", "-c"]
@@ -18,7 +17,7 @@ newline = "none"
 
 [editor.inline-diagnostics]
 cursor-line = "warning"
-other-lines = "error"
+# other-lines = "error"
 
 [keys.normal]
 C-r = [":reload-all"]
@@ -34,6 +33,8 @@ C-y = [
   ':open %sh{cat /tmp/unique-file}',
   ':redraw',
 ]
+
+C-t = [":toggle-option lsp.display-inlay-hints"]
 
 [editor.statusline]
 left = [
